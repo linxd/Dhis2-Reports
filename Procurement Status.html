@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <style>
+        .heading td {
+            background: #1D9FDF;
+            color: white;
+            text-align: center;
+            border: none;
+        }
+
+        #heading {
+            text-align: center;
+        }
+
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            height: 30px;
+            width: 280px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .noBorder td {
+            border: none;
+            background: lightgray;
+        }
+
+        table thead tr td {
+            background: gray;
+            height: 30px;
+            min-width: 100px;
+        }
+
+        .reporttable {
+            border-collapse: collapse;
+        }
+    </style>
+
+
+    <script>
+        var json = "";
+        var ncbc = "", district = "", sub = "";
+        var checkOuLevel = function (ou) {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: "../api/organisationUnits/" + ou + ".json",
+                success: function (data) {
+                    json = data;
+
+                }
+            });
+            return json;
+        };
+
+        var month;
+        var getMonth = function (a) {
+            if (a == "1" || a == "01") { month = "January" }
+            if (a == "2" || a == "02") { month = "February" }
+            if (a == "3" || a == "03") { month = "March" }
+            if (a == "4" || a == "04") { month = "April" }
+            if (a == "5" || a == "05") { month = "May" }
+            if (a == "6" || a == "06") { month = "June" }
+            if (a == "7" || a == "07") { month = "July" }
+            if (a == "8" || a == "08") { month = "August" }
+            if (a == "9" || a == "09") { month = "September" }
+            if (a == "10") { month = "october" }
+            if (a == "11") { month = "November" }
+            if (a == "12") { month = "December" }
+        };
+
+        var getFirstThreeColumn = function (ou) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: "../api/organisationUnits/" + ou + ".json?fields=ancestors[id,name,level],displayName",
+                    success: function (data) {
+                        for(var i=0;i<data.ancestors.length;i++){
+                            if(data.ancestors[i].level == 2){
+                                district = data.ancestors[i].name; 
+                            }
+                            if(data.ancestors[i].level == 3){
+                                sub = data.ancestors[i].name; 
+                            }
+                                ncbc = data.displayName; 
+                            
+                        }
+
+                    }
+                });
+                return district,sub,ncbc;
+            };
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var pe1 = url.split("&")[1];
+            var pe = pe1.split("=")[1];
+            var monthCode = pe.substr(4, 6);
+            getMonth(monthCode);
+            var year = pe.substr(0, 4);
+            var ou1 = url.split("&")[2];
+            var ou = ou1.split("=")[1];
+            var ouLeveldata = checkOuLevel(ou);
+            var ouLevel = ouLeveldata.level;
+            var index = 1;
+            //  var periodArray = getPeriodArray(pe);
+
+            
+
+            var s2col1 = "", s2col2 = "", s2col3 = "", s2col4 = "", s2col5 = "", s2col6 = "", s2col7 = "";
+            var s1col1 = "", s1col2 = "", s1col3 = "", s1col4 = "", s1col5 = "", s1col6 = "", s1col7 = "", s1col8 = "", s1col9 = "", s1col10 = "";
+            var s1col11 = "", s1col12 = "", s1col13 = "", s1col14 = "", s1col15 = "", s1col16 = "", s1col17 = "", s1col18 = "", s1col19 = "", s1col20 = "";
+            var printData = function (ou) {
+                var json1 = ""; json2 = ""; json3 = "";
+
+                //stage 1 api
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: "../api/26/analytics/events/query/UGjSkuT89ro.json?dimension=pe:" + pe + "&dimension=ou:" + ou + "&dimension=ATwsN6WQJQq&dimension=L92irZH9UFW&dimension=BRMBUJaKTjv&dimension=Ish7K0sB961&dimension=kFw4mWPRT6n&dimension=HXOOJx6gypM&dimension=ndEyCxufHBG&dimension=UKqPNCJCkjJ&dimension=g9LMRnFMgBj&dimension=JaRX1ZaLRyw&dimension=BnjrKaUWiVv&dimension=fmSdKtJQHw8&dimension=gBt0TWdC7EB&dimension=P0TCSYtPVVT&dimension=YPYyJcgAwo8&dimension=rCoYXYKxfsj&dimension=d5ZCUyu0okQ&dimension=XVB5Sd4dsVM&dimension=uApqnwkVWiC&dimension=yZ9PE7eph3c&stage=E0btnJahvMZ&displayProperty=SHORTNAME&outputType=NAME&pageSize=100&skipPaging=true",
+                    success: function (data) {
+                        json2 = data;
+                        for (var j = 0; j < data.headers.length; j++) {
+
+                            if (data.headers[j].column == "Procurement_Contract type") {
+                                s1col1 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Engineers estimate") {
+                                s1col2 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Proposed surface (km)") {
+                                s1col3 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Contract modality (Contracts'/CP/Shopping)") {
+                                s1col4 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Bid invitation date") {
+                                s1col5 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Submission and opening date") {
+                                s1col6 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Bid validity & bid security") {
+                                s1col7 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_BER Submission date to PCU") {
+                                s1col8 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_BER to ADB date") {
+                                s1col9 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_ADB NOC date") {
+                                s1col10 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_LOI date") {
+                                s1col11 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_LOA date") {
+                                s1col12 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Contractor") {
+                                s1col13 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Agreement date") {
+                                s1col14 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Commencement date") {
+                                s1col15 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Contract mobilization date") {
+                                s1col16 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Intended completion date") {
+                                s1col17 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Contract duration") {
+                                s1col18 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Extension of Time") {
+                                s1col19 = j;
+                            }
+                            if (data.headers[j].column == "Procurement_Actual completion date") {
+                                s1col20 = j;
+                            }
+                        }
+                    }
+                });
+
+                //stage 2 api
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: "../api/26/analytics/events/query/UGjSkuT89ro.json?dimension=pe:" + pe + "&dimension=ou:" + ou + "&dimension=nqA0Ha062Fa&dimension=HdHIxPcoLFP&dimension=K4m81OZdVk4&dimension=rOFfGVE2rm7&dimension=OK0ERE1CRbA&dimension=rCoYXYKxfsj&dimension=BQKVbdAmZNh&dimension=T21sqK0qMuy&stage=AhjSjzbuMR5&displayProperty=SHORTNAME&outputType=EVENT&pageSize=100&skipPaging=true",
+                    success: function (data) {
+                        json3 = data;
+                        for (var i = 0; i < data.headers.length; i++) {
+
+                            if (data.headers[i].column == "Procurement_Original contract amount") {
+                                s2col1 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Actual contract amount") {
+                                s2col3 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Financial prog (%)") {
+                                s2col6 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Payment amount (Reporting month)") {
+                                s2col4 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Remarks") {
+                                s2col7 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Final payment amount") {
+                                s2col5 = i;
+                            }
+                            if (data.headers[i].column == "Procurement_Variation (if any)") {
+                                s2col2 = i;
+                            }
+                        }
+                    }
+                });
+
+                // first three columns
+               getFirstThreeColumn(ou);
+                for (var p = 0; p < json2.rows.length; p++) {
+                    var row = "<tr>";
+                    row = row + "<td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td><td>" + json2.rows[p][s1col1] + "</td><td>" + parseInt(json2.rows[p][s1col2]) + "</td><td>" + parseInt(json2.rows[p][s1col3]) + "</td><td>" + json2.rows[p][s1col4] + "</td><td>" + json2.rows[p][s1col5] + "</td><td>" + json2.rows[p][s1col6] + "</td><td>" + json2.rows[p][s1col7] + "</td>";
+                    row = row + "<td>" + json2.rows[p][s1col8] + "</td><td>" + json2.rows[p][s1col9] + "</td><td>" + json2.rows[p][s1col10] + "</td><td>" + json2.rows[p][s1col11] + "</td><td>" + json2.rows[p][s1col12] + "</td><td>" + json2.rows[p][s1col13] + "</td><td>" + json2.rows[p][s1col14] + "</td><td>" + json2.rows[p][s1col15] + "</td><td>" + json2.rows[p][s1col16] + "</td><td>" + json2.rows[p][s1col17] + "</td>";
+                    row = row + "<td>" + parseInt(json2.rows[p][s1col18]) + "</td><td>" + json2.rows[p][s1col19] + "</td><td>" + json2.rows[p][s1col20] + "</td><td>" + parseInt(json3.rows[p][s2col1]) + "</td><td>" + parseInt(json3.rows[p][s2col2]) + "</td><td>" + parseInt(json3.rows[p][s2col3]) + "</td><td>" + parseInt(json3.rows[p][s2col4]) + "</td><td>" + parseInt(json3.rows[p][s2col5]) + "</td><td>" + parseInt(json3.rows[p][s2col6]) + "</td><td>" + json3.rows[p][s2col7] + "</td>";
+                    row = row + "</tr>";
+                    $('.reporttable').append(row);
+                }
+            };
+
+            if (ouLevel == 1) {
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    var tempOu = ouLeveldata.children[p].id;
+                    var tempOuData = checkOuLevel(tempOu);
+                    if (tempOuData.children.length !== 0) {
+                        for (var l = 0; l < tempOuData.children.length; l++) {
+                            var tempOu2 = tempOuData.children[l].id;
+                            var tempOuData2 = checkOuLevel(tempOu2);
+                            if (tempOuData2.children.length !== 0) {
+                                for (var m = 0; m < tempOuData2.children.length; m++) {
+                                    ouu = tempOuData2.children[m].id;
+                                    printData(ouu);
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (ouLevel == 2) {
+
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    var tempOu = ouLeveldata.children[p].id;
+                    var tempOuData = checkOuLevel(tempOu);
+                    if (tempOuData.children.length !== 0) {
+                        for (var l = 0; l < tempOuData.children.length; l++) {
+                            ouu = tempOuData.children[l].id;
+                            printData(ouu);
+                        }
+                    }
+                }
+            }
+            else if (ouLevel == 3) {
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    ouu = ouLeveldata.children[p].id;
+                    printData(ouu);
+                }
+            }
+            else if (ouLevel == 4) {
+                printData(ou);
+            }
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="body">
+        <table class="table table-bordered reporttable" width="100%">
+            <thead>
+                <tr class="heading">
+                    <td colspan="5" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
+                    <td colspan="20" rowspan="1">
+                        <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
+                    </td>
+                    <td colspan="5" rowspan="3"></td>
+                </tr>
+                <tr class="heading">
+                    <td colspan="20" rowspan="1">
+                        <p style="font-size:20px;">Rehabilitation and Reconstruction of District Roads</p>
+                    </td>
+                </tr>
+                <tr class="heading">
+                    <td colspan="20" rowspan="1">
+                        <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" colspan="1">District</td>
+                    <td rowspan="2" colspan="1">Sub-project</td>
+                    <td rowspan="2" colspan="1">NCB contract</td>
+                    <td rowspan="2" colspan="1">Contact description</td>
+                    <td rowspan="2" colspan="1">Engineer's estimate Exc. VAT cont.</td>
+                    <td rowspan="2" colspan="1">Proposed surface(kms)</td>
+                    <td rowspan="2" colspan="1">Contract modality</td>
+                    <td rowspan="2" colspan="1">Invitation for bid (IFB)</td>
+                    <td rowspan="2" colspan="1">Submission and opening date</td>
+                    <td rowspan="2" colspan="1">Bid validity and bid secuirity</td>
+                    <td rowspan="2" colspan="1">BER submission to PCU</td>
+                    <td rowspan="2" colspan="1">BER to ADB</td>
+                    <td rowspan="2" colspan="1">ADB no objection date</td>
+                    <td rowspan="2" colspan="1">LOI date</td>
+                    <td rowspan="2" colspan="1">LOA date</td>
+                    <td rowspan="2" colspan="1">Contractor</td>
+                    <td colspan="7" rowspan="1">Contract duration</td>
+                    <td rowspan="2" colspan="1">Contract amount incl VAT</td>
+                    <td rowspan="2" colspan="1">Variation(if any)</td>
+                    <td rowspan="2" colspan="1">Contract amount after variation</td>
+                    <td rowspan="2" colspan="1">Amount paid in reporting month</td>
+                    <td rowspan="2" colspan="1">Final payment amount</td>
+                    <td rowspan="2" colspan="1">Financial progress(%)</td>
+                    <td rowspan="2" colspan="1">Remarks</td>
+                </tr>
+                <tr>
+                    <td rowspan="1" colspan="1">Agreement date</td>
+                    <td rowspan="1" colspan="1">Contrct commencement date</td>
+                    <td rowspan="1" colspan="1">Contract mobilization date</td>
+                    <td rowspan="1" colspan="1">Intended completion date</td>
+                    <td rowspan="1" colspan="1">Contract duration</td>
+                    <td rowspan="1" colspan="1">Extension of time (EOT)</td>
+                    <td rowspan="1" colspan="1">Actual Completion date</td>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</body>
+
+</html>
