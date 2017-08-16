@@ -123,6 +123,21 @@
             var index = 1;
             var periodArray = getPeriodArray(pe);
 
+
+            $("#export").click(function (e) {
+                e.preventDefault();
+
+                //getting data from our table
+                var data_type = 'data:application/vnd.ms-excel';
+                var table_div = document.getElementById('report_table');
+                var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+                var a = document.createElement('a');
+                a.href = data_type + ', ' + table_html;
+                a.download = 'Procurement Status.xls';
+                a.click();
+            });
+
             var printData = function (ou) {
                 var json1 = ""; json2 = 0;
                 var col1 = "", col2 = "", col3 = "", col4 = "", col5 = "", col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "", col12 = "", col13 = "";
@@ -236,72 +251,74 @@
                 if (json1.rows.length == 0) { return; }
                 getFirstThreeColumn(ou);
 
-                    for (var j = 0; j < json1.rows.length; j++) {
-                        var row = "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td>";
+                for (var j = 0; j < json1.rows.length; j++) {
+                    var row = "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td>";
 
-                        row = row + "<td>" + json1.rows[j][col1] + "</td><td>" + parseInt(json1.rows[j][col2]) + "</td><td>" + parseInt(json1.rows[j][col3]) + "</td><td>" + json1.rows[j][col4] + "</td><td>" + json1.rows[j][col5] + "</td>";
-                        row = row + "<td>" + json1.rows[j][col6] + "</td><td>" + json1.rows[j][col7] + "</td><td>" + json1.rows[j][col8] + "</td><td>" + json1.rows[j][col9] + "</td><td>" + json1.rows[j][col10] + "</td>";
-                        row = row + "<td>" + json1.rows[j][col11] + "</td><td>" + json1.rows[j][col12] + "</td><td>" + json1.rows[j][col13] + "</td><td>" + json1.rows[j][col14] + "</td><td>" + json1.rows[j][col15] + "</td>";
-                        row = row + "<td>" + json1.rows[j][col16] + "</td><td>" + json1.rows[j][col17] + "</td><td>" + parseInt(json1.rows[j][col18]) + "</td><td>" + json1.rows[j][col19] + "</td><td>" + json1.rows[j][col20] + "</td>";
+                    row = row + "<td>" + json1.rows[j][col1] + "</td><td>" + parseInt(json1.rows[j][col2]) + "</td><td>" + parseInt(json1.rows[j][col3]) + "</td><td>" + json1.rows[j][col4] + "</td><td>" + json1.rows[j][col5] + "</td>";
+                    row = row + "<td>" + json1.rows[j][col6] + "</td><td>" + json1.rows[j][col7] + "</td><td>" + json1.rows[j][col8] + "</td><td>" + json1.rows[j][col9] + "</td><td>" + json1.rows[j][col10] + "</td>";
+                    row = row + "<td>" + json1.rows[j][col11] + "</td><td>" + json1.rows[j][col12] + "</td><td>" + json1.rows[j][col13] + "</td><td>" + json1.rows[j][col14] + "</td><td>" + json1.rows[j][col15] + "</td>";
+                    row = row + "<td>" + json1.rows[j][col16] + "</td><td>" + json1.rows[j][col17] + "</td><td>" + parseInt(json1.rows[j][col18]) + "</td><td>" + json1.rows[j][col19] + "</td><td>" + json1.rows[j][col20] + "</td>";
 
-                        row = row + "<td>" + parseInt(json2.rows[j][scol1]) + "</td><td>" + parseInt(json2.rows[j][scol2]) + "</td><td>" + parseInt(json2.rows[j][scol3]) + "</td><td>" + parseInt(json2.rows[j][scol4]) + "</td><td>" + parseInt(json2.rows[j][scol5]) + "</td><td>" + parseInt(json2.rows[j][scol6]) + "</td><td>" + json2.rows[j][scol7] + "</td></tr>";
-                        $('.reporttable').append(row);
-                    }
-                };
+                    row = row + "<td>" + parseInt(json2.rows[j][scol1]) + "</td><td>" + parseInt(json2.rows[j][scol2]) + "</td><td>" + parseInt(json2.rows[j][scol3]) + "</td><td>" + parseInt(json2.rows[j][scol4]) + "</td><td>" + parseInt(json2.rows[j][scol5]) + "</td><td>" + parseInt(json2.rows[j][scol6]) + "</td><td>" + json2.rows[j][scol7] + "</td></tr>";
+                    $('.reporttable').append(row);
+                }
+            };
 
-                if (ouLevel == 1) {
-                    for (var p = 0; p < ouLeveldata.children.length; p++) {
-                        var tempOu = ouLeveldata.children[p].id;
-                        var tempOuData = checkOuLevel(tempOu);
-                        if (tempOuData.children.length !== 0) {
-                            for (var l = 0; l < tempOuData.children.length; l++) {
-                                var tempOu2 = tempOuData.children[l].id;
-                                var tempOuData2 = checkOuLevel(tempOu2);
-                                if (tempOuData2.children.length !== 0) {
-                                    for (var m = 0; m < tempOuData2.children.length; m++) {
-                                        ouu = tempOuData2.children[m].id;
-                                        printData(ouu, index);
-                                        index++;
-                                    }
+            if (ouLevel == 1) {
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    var tempOu = ouLeveldata.children[p].id;
+                    var tempOuData = checkOuLevel(tempOu);
+                    if (tempOuData.children.length !== 0) {
+                        for (var l = 0; l < tempOuData.children.length; l++) {
+                            var tempOu2 = tempOuData.children[l].id;
+                            var tempOuData2 = checkOuLevel(tempOu2);
+                            if (tempOuData2.children.length !== 0) {
+                                for (var m = 0; m < tempOuData2.children.length; m++) {
+                                    ouu = tempOuData2.children[m].id;
+                                    printData(ouu, index);
+                                    index++;
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                else if (ouLevel == 2) {
+            else if (ouLevel == 2) {
 
-                    for (var p = 0; p < ouLeveldata.children.length; p++) {
-                        var tempOu = ouLeveldata.children[p].id;
-                        var tempOuData = checkOuLevel(tempOu);
-                        if (tempOuData.children.length !== 0) {
-                            for (var l = 0; l < tempOuData.children.length; l++) {
-                                ouu = tempOuData.children[l].id;
-                                printData(ouu, index);
-                                index++;
-                            }
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    var tempOu = ouLeveldata.children[p].id;
+                    var tempOuData = checkOuLevel(tempOu);
+                    if (tempOuData.children.length !== 0) {
+                        for (var l = 0; l < tempOuData.children.length; l++) {
+                            ouu = tempOuData.children[l].id;
+                            printData(ouu, index);
+                            index++;
                         }
                     }
                 }
-                else if (ouLevel == 3) {
-                    for (var p = 0; p < ouLeveldata.children.length; p++) {
-                        ouu = ouLeveldata.children[p].id;
-                        printData(ouu, index);
-                        index++;
-                    }
+            }
+            else if (ouLevel == 3) {
+                for (var p = 0; p < ouLeveldata.children.length; p++) {
+                    ouu = ouLeveldata.children[p].id;
+                    printData(ouu, index);
+                    index++;
                 }
-                else if (ouLevel == 4) {
-                    printData(ou);
-                }
+            }
+            else if (ouLevel == 4) {
+                printData(ou);
+            }
 
 
-            });
+        });
     </script>
 </head>
 
 <body>
     <div id="body">
-        <table class="table table-bordered reporttable" width="100%">
+        <center><button id="export">Export to Excel</button></center>
+        <br>
+        <table class="table table-bordered reporttable" width="100%" id="report_table">
             <thead>
                 <tr class="heading">
                     <td colspan="5" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
@@ -317,7 +334,7 @@
                 </tr>
                 <tr class="heading">
                     <td colspan="20" rowspan="1">
-                        <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
+                        <p style="font-size:16px;">Procurement Status</p>
                     </td>
                 </tr>
                 <tr>

@@ -149,6 +149,23 @@
             //var ouPe1 = ouPeriod.split('T')[0];
             //var ouPe2 = ouPe1.split('-');
             //var ouPe = ouPe2[0] + ouPe2[1];
+
+               $("#export").click(function (e) {
+                    e.preventDefault();
+
+                    //getting data from our table
+                    var data_type = 'data:application/vnd.ms-excel';
+                    var table_div = document.getElementById('report_table');
+                    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+                    var a = document.createElement('a');
+                    a.href = data_type + ', ' + table_html;
+                    a.download = 'Physical vs Financial Progress.xls';
+                    a.click();
+                });
+
+
+
             var periodArray = getPeriodArray(pe);
 
             var printData = function (ou, i) {
@@ -1030,7 +1047,7 @@
                 var ouname = getName.name;
                 var districtt = getDistrict(ou);
                 var table = "<table class='reporttable_" + i + "' border='1'></table>";
-                $("#body").append(table);
+                $(".tableattach").append(table);
                 //name of ou
                 var row = "<tr  bgcolor='lightgray'><td colspan= '3'>District :</td><td colspan='3'>" + districtt + "</td><td colspan='3'>Sub-project :</td><td colspan='3'>" + ouname + "</td><td colspan='3'>Period :</td><td colspan='3'>" + month + " " + year + "</td></tr>";
 
@@ -1116,6 +1133,8 @@
 
 <body>
     <div id="body">
+        <center><button id="export">Export to Excel</button></center>
+        <br>
         <table class="table table-bordered" width="167%">
             <thead>
                 <tr class="heading">
@@ -1132,11 +1151,12 @@
                 </tr>
                 <tr class="heading">
                     <td colspan="4" rowspan="1">
-                        <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
+                        <p style="font-size:16px;">Physical vs Financial Progress</p>
                     </td>
                 </tr>
             </thead>
         </table>
+        <table id="report_table" class="tableattach"></table>
         <br>
     </div>
 </body>

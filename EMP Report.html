@@ -45,7 +45,7 @@
 
     <script>
         var json = "";
-        var district ="";
+        var district = "";
         var checkOuLevel = function (ou) {
             $.ajax({
                 async: false,
@@ -108,22 +108,22 @@
             if (a == "12") { month = "December" }
         };
 
-           var getDistrict = function (ou) {
-                $.ajax({
-                    async: false,
-                    type: "GET",
-                    url: "../api/organisationUnits/" + ou + ".json?fields=ancestors[id,name,level]",
-                    success: function (data) {
-                        for(var i=0;i<data.ancestors.length;i++){
-                            if(data.ancestors[i].level == 2){
-                                district = data.ancestors[i].name; 
-                            }
+        var getDistrict = function (ou) {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: "../api/organisationUnits/" + ou + ".json?fields=ancestors[id,name,level]",
+                success: function (data) {
+                    for (var i = 0; i < data.ancestors.length; i++) {
+                        if (data.ancestors[i].level == 2) {
+                            district = data.ancestors[i].name;
                         }
-
                     }
-                });
-                return district;
-            };
+
+                }
+            });
+            return district;
+        };
 
         $(document).ready(function () {
             var url = window.location.href;
@@ -142,6 +142,22 @@
             //var ouPe1 = ouPeriod.split('T')[0];
             //var ouPe2 = ouPe1.split('-');
             //var ouPe = ouPe2[0] + ouPe2[1];
+
+
+                $("#export").click(function (e) {
+                    e.preventDefault();
+
+                    //getting data from our table
+                    var data_type = 'data:application/vnd.ms-excel';
+                    var table_div = document.getElementById('report_table');
+                    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+                    var a = document.createElement('a');
+                    a.href = data_type + ', ' + table_html;
+                    a.download = 'EMP Report.xls';
+                    a.click();
+                });
+           
             var periodArray = getPeriodArray(pe);
 
             var printData = function (ou, i) {
@@ -489,7 +505,7 @@
                 var ouname = getName.name;
                 var districtt = getDistrict(ou);
                 var table = "<table class='reporttable_" + i + "' border='1'></table>";
-                $("#body").append(table);
+                $(".tableattach").append(table);
                 //name of ou
                 var row = "<tr  bgcolor='lightgray'><td colspan= '1'>District :</td><td colspan='1'>" + districtt + "</td><td colspan='1'>Sub-project :</td><td colspan='1'>" + ouname + "</td><td colspan='1'>Period :</td><td colspan='1'>" + month + " " + year + "</td></tr>";
 
@@ -578,6 +594,8 @@
 
 <body>
     <div id="body">
+        <center><button id="export">Export to Excel</button></center>
+        <br>
         <table class="table table-bordered" width="100%">
             <thead>
                 <tr class="heading">
@@ -594,11 +612,12 @@
                 </tr>
                 <tr class="heading">
                     <td colspan="4" rowspan="1">
-                        <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
+                        <p style="font-size:16px;">EMP Report</p>
                     </td>
                 </tr>
             </thead>
         </table>
+        <table id="report_table" class="tableattach"></table>
         <br>
     </div>
 </body>

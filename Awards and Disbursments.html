@@ -46,6 +46,23 @@
 
 
     <script>
+
+        
+        $(document).ready(function () {
+            $("#export").click(function (e) {
+                e.preventDefault();
+
+                //getting data from our table
+                var data_type = 'data:application/vnd.ms-excel';
+                var table_div = document.getElementById('report_table');
+                var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+                var a = document.createElement('a');
+                a.href = data_type + ', ' + table_html;
+                a.download = 'Awards and Disbursements.xls';
+                a.click();
+            });
+        });
         var json = "";
         var ncbc = "", district = "", sub = "";
         var checkOuLevel = function (ou) {
@@ -99,7 +116,6 @@
             });
             return district, sub, ncbc;
         };
-
         var submit = function () {
             var url = window.location.href;
             var pe1 = url.split("&")[1];
@@ -184,8 +200,8 @@
                             url: "../api/26/analytics.json?dimension=pe:2015July;2016July;2017July;2018July;2019July;2020July&dimension=dx:W9IMrHkdYQp&filter=ou:" + ou + "&displayProperty=SHORTNAME&outputIdScheme=NAME",
                             success: function (data) {
                                 if (data.rows.length == 0) {
-                            return;
-                        }
+                                    return;
+                                }
                                 for (var i = 0; i < data.rows.length; i++) {
                                     if (data.rows[i][0] == "AD_Remark" && data.rows[i][1] == fyear) {
                                         remarks = data.rows[i][2];
@@ -257,7 +273,10 @@
 
 <body>
     <div id="body">
-        <table class="table table-bordered reporttable" width="100%">
+
+        <center><button id="export">Export to Excel</button></center>
+        <br>
+        <table class="table table-bordered reporttable" width="100%" id="report_table">
             <thead>
                 <tr class="heading">
                     <td colspan="5" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
@@ -273,7 +292,7 @@
                 </tr>
                 <tr class="heading">
                     <td colspan="20" rowspan="1">
-                        <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
+                        <p style="font-size:16px;">Awards and Disbursements</p>
                     </td>
                 </tr>
                 <tr class="noBorder">
