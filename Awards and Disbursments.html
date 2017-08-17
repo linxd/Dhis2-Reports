@@ -42,6 +42,9 @@
         .reporttable {
             border-collapse: collapse;
         }
+        #export{
+            margin-left: 90px;
+        }
     </style>
 
 
@@ -217,7 +220,7 @@
                         col4 = fyear;
                         total = y1 + y2 + y3 + y4;
                         getFirstThreeColumn(ou);
-                        var row = "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td><td>" + code + "</td><td>" + col1 + "</td><td>" + col2 + "</td><td>" + col3 + "</td><td>" + col4 + "</td><td>" + y1 + "</td><td>" + y2 + "</td><td>" + y3 + "</td><td>" + y4 + "</td><td>" + total + "</td><td>" + remarks + "</td></tr>";
+                        var row = "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td><td>" + code + "</td><td>" + col1 + "</td><td>" + col2 + "</td><td>" + col3 + "</td><td>" + y3 + "</td><td>" + y1 + "</td><td>" + y2 + "</td><td>" + y3 + "</td><td>" + y4 + "</td><td>" + total + "</td><td>" + remarks + "</td></tr>";
                         $('.reporttable').append(row);
                     }
                 });
@@ -274,50 +277,36 @@
 <body>
     <div id="body">
 
-        <center><button id="export">Export to Excel</button></center>
-        <br>
-        <table class="table table-bordered reporttable" width="100%" id="report_table">
-            <thead>
-                <tr class="heading">
-                    <td colspan="5" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
-                    <td colspan="20" rowspan="1">
-                        <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
-                    </td>
-                    <td colspan="5" rowspan="3"></td>
-                </tr>
-                <tr class="heading">
-                    <td colspan="20" rowspan="1">
-                        <p style="font-size:20px;">Rehabilitation and Reconstruction of District Roads</p>
-                    </td>
-                </tr>
-                <tr class="heading">
-                    <td colspan="20" rowspan="1">
-                        <p style="font-size:16px;">Awards and Disbursements</p>
-                    </td>
-                </tr>
-                <tr class="noBorder">
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
-                    <td colspan="2">Select Financial Year : </td>
-                    <td colspan="2">
-                        <select id="selection">
+        <button id="export">Export to Excel</button>
+        <center>  <select id="selection">
                             <option value="1">Jul 2019 to Jun 2020</option>
                             <option value="2">Jul 2018 to Jun 2019</option>
                             <option value="3">Jul 2017 to Jun 2018</option>
                             <option value="4">Jul 2016 to Jun 2017</option>
                             <option value="5">Jul 2015 to Jun 2016</option>
                         </select>
+                      <button onclick="submit()">submit</button></center>
+        <br><br>
+        <table class="table table-bordered reporttable" width="100%" id="report_table"  border='1'>
+            <thead>
+                <tr class="heading">
+                    <td colspan="3" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
+                    <td colspan="8" rowspan="1">
+                        <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
                     </td>
-                    <td colspan="2">
-                        <button onclick="submit()">submit</button>
-                    </td>
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
-                    <td colspan="1"></td>
+                    <td colspan="3" rowspan="3"></td>
                 </tr>
+                <tr class="heading">
+                    <td colspan="8" rowspan="1">
+                        <p style="font-size:20px;">Rehabilitation and Reconstruction of District Roads</p>
+                    </td>
+                </tr>
+                <tr class="heading">
+                    <td colspan="8" rowspan="1">
+                        <p style="font-size:16px;">Awards and Disbursements</p>
+                    </td>
+                </tr>
+                
                 <tr>
                     <td rowspan="2" colspan="1">District</td>
                     <td rowspan="2" colspan="1">Sub-project</td>
