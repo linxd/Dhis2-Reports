@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
         .heading td {
             background: #1D9FDF;
@@ -195,13 +195,13 @@
                                 mtrow4 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Spoil disposal management_Location of spoil disposal site") {
-                                mtrow5 = parseInt(data.rows[i][2]);
+                                mtrow5 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Spoil disposal management_Number and volume of toe wall constructed") {
                                 mtrow6 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Quarry site management_Location") {
-                                mtrow7 = parseInt(data.rows[i][2]);
+                                mtrow7 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Quarry site management_Volume of aggregates/stones/other materials supplied") {
                                 mtrow8 = parseInt(data.rows[i][2]);
@@ -210,7 +210,7 @@
                                 mtrow9 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Land slide and erosion control measures_ Location") {
-                                mtrow10 = parseInt(data.rows[i][2]);
+                                mtrow10 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Land slide and erosion control measures_ Type of measures taken") {
                                 mtrow11 = parseInt(data.rows[i][2]);
@@ -219,7 +219,7 @@
                                 mtrow12 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Bioengineering works_ Location") {
-                                mtrow13 = parseInt(data.rows[i][2]);
+                                mtrow13 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Bioengineering works_ Area") {
                                 mtrow14 = parseInt(data.rows[i][2]);
@@ -309,22 +309,22 @@
                                 msrow8 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Road side plantation_Location") {
-                                msrow9 = parseInt(data.rows[i][2]);
+                                msrow9 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Road side plantation_Amount spent") {
                                 msrow10 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Compensation/Rehabilitation of public infrastructure along road side_Name & Location") {
-                                msrow11 = parseInt(data.rows[i][2]);
+                                msrow11 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Compensation/Rehabilitation of public infrastructure along road side_Name & Location 2") {
-                                msrow12 = parseInt(data.rows[i][2]);
+                                msrow12 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Informative/safety/environmental awareness signboard erected_Number") {
                                 msrow13 = parseInt(data.rows[i][2]);
                             }
                             if (data.rows[i][0] == "EMP_Informative/safety/environmental awareness signboard erected_Location") {
-                                msrow14 = parseInt(data.rows[i][2]);
+                                msrow14 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "EMP_Meeting convened by safeguard desk_Number of meeting held") {
                                 msrow15 = parseInt(data.rows[i][2]);
@@ -406,13 +406,13 @@
                                         ctrow4 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Spoil disposal management_Location of spoil disposal site") {
-                                        ctrow5 += parseInt(data.rows[i][2]);
+                                        ctrow5 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Spoil disposal management_Number and volume of toe wall constructed") {
                                         ctrow6 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Quarry site management_Location") {
-                                        ctrow7 += parseInt(data.rows[i][2]);
+                                        ctrow7 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Quarry site management_Volume of aggregates/stones/other materials supplied") {
                                         ctrow8 += parseInt(data.rows[i][2]);
@@ -421,7 +421,7 @@
                                         ctrow9 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Land slide and erosion control measures_ Location") {
-                                        ctrow10 += parseInt(data.rows[i][2]);
+                                        ctrow10 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Land slide and erosion control measures_ Type of measures taken") {
                                         ctrow11 += parseInt(data.rows[i][2]);
@@ -430,7 +430,7 @@
                                         ctrow12 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Bioengineering works_ Location") {
-                                        ctrow13 += parseInt(data.rows[i][2]);
+                                        ctrow13 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Bioengineering works_ Area") {
                                         ctrow14 += parseInt(data.rows[i][2]);
@@ -468,22 +468,22 @@
                                         csrow8 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Road side plantation_Location") {
-                                        csrow9 += parseInt(data.rows[i][2]);
+                                        csrow9 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Road side plantation_Amount spent") {
                                         csrow10 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Compensation/Rehabilitation of public infrastructure along road side_Name & Location") {
-                                        csrow11 += parseInt(data.rows[i][2]);
+                                        csrow11 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Compensation/Rehabilitation of public infrastructure along road side_Name & Location 2") {
-                                        csrow12 += parseInt(data.rows[i][2]);
+                                        csrow12 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Informative/safety/environmental awareness signboard erected_Number") {
                                         csrow13 += parseInt(data.rows[i][2]);
                                     }
                                     if (data.rows[i][0] == "EMP_Informative/safety/environmental awareness signboard erected_Location") {
-                                        csrow14 += parseInt(data.rows[i][2]);
+                                        csrow14 += data.rows[i][2] + ",";
                                     }
                                     if (data.rows[i][0] == "EMP_Meeting convened by safeguard desk_Number of meeting held") {
                                         csrow15 += parseInt(data.rows[i][2]);
@@ -599,7 +599,7 @@
         <table class="table table-bordered" width="100%">
             <thead>
                 <tr class="heading">
-                    <td colspan="1" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
+                    <td colspan="1" rowspan="3"><img src="../dhis-web-commons/security/DRILP_Logo.jpg" width="90%" height="400%"></td>
                     <td colspan="4" rowspan="1">
                         <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
                     </td>

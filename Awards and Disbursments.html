@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
         .heading td {
             background: #1D9FDF;
@@ -34,7 +34,7 @@
         }
 
         table thead tr td {
-            background: gray;
+            background: lightgray;
             height: 30px;
             min-width: 100px;
         }
@@ -47,9 +47,11 @@
         }
     </style>
 
+<script id="erasable" type="text/javascript">
+   
 
-    <script>
-
+   
+    
         
         $(document).ready(function () {
             $("#export").click(function (e) {
@@ -120,6 +122,9 @@
             return district, sub, ncbc;
         };
         var submit = function () {
+
+            $(".reporttable tbody").remove();
+            $(".reporttable tbody").detach();
             var url = window.location.href;
             var pe1 = url.split("&")[1];
             //var pe = pe1.split("=")[1];
@@ -147,6 +152,7 @@
             var ouLeveldata = checkOuLevel(ou);
             var ouLevel = ouLeveldata.level;
             var index = 1;
+            var row = "<tbody>";
             //  var periodArray = getPeriodArray(pe);
 
 
@@ -167,7 +173,7 @@
                         }
                         for (var i = 0; i < data.rows.length; i++) {
 
-                            if (data.rows[i][0] == "AD_Contract description " && data.rows[i][1] == fyear) {
+                            if (data.rows[i][0] == "AD_Contract description (type)" && data.rows[i][1] == fyear) {
                                 col1 = data.rows[i][2];
                             }
                             if (data.rows[i][0] == "AD_Contract code" && data.rows[i][1] == fyear) {
@@ -220,10 +226,11 @@
                         col4 = fyear;
                         total = y1 + y2 + y3 + y4;
                         getFirstThreeColumn(ou);
-                        var row = "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td><td>" + code + "</td><td>" + col1 + "</td><td>" + col2 + "</td><td>" + col3 + "</td><td>" + y3 + "</td><td>" + y1 + "</td><td>" + y2 + "</td><td>" + y3 + "</td><td>" + y4 + "</td><td>" + total + "</td><td>" + remarks + "</td></tr>";
-                        $('.reporttable').append(row);
+                         row = row + "<tr><td>" + district + "</td><td>" + sub + "</td><td>" + ncbc + "</td><td>" + code + "</td><td>" + col1 + "</td><td>" + col2 + "</td><td>" + parseInt(col3) + "</td><td>" + y3 + "</td><td>" + y1 + "</td><td>" + y2 + "</td><td>" + y3 + "</td><td>" + y4 + "</td><td>" + total + "</td><td>" + remarks + "</td></tr>";
+                        $('.reporttable').append(row + "</tbody>");
                     }
                 });
+                
             };
 
             if (ouLevel == 1) {
@@ -288,21 +295,21 @@
                       <button onclick="submit()">submit</button></center>
         <br><br>
         <table class="table table-bordered reporttable" width="100%" id="report_table"  border='1'>
-            <thead>
-                <tr class="heading">
-                    <td colspan="3" rowspan="3"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
-                    <td colspan="8" rowspan="1">
+            <thead bgcolor="#1D9FDF">
+                <tr class="heading" border="0" bgcolor="#1D9FDF">
+                    <td colspan="3" rowspan="3"  border="0" bgcolor="#1D9FDF" ><img src="../dhis-web-commons/security/DRILP_Logo.jpg" width="120px" height="70px" ></td>
+                    <td colspan="8" rowspan="1" border="0" bgcolor="#1D9FDF">
                         <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
                     </td>
-                    <td colspan="3" rowspan="3"></td>
+                    <td colspan="3" rowspan="3" border="0" bgcolor="#1D9FDF"></td>
                 </tr>
-                <tr class="heading">
-                    <td colspan="8" rowspan="1">
+                <tr class="heading" border="no0ne" bgcolor="#1D9FDF">
+                    <td colspan="8" rowspan="1" border="0" bgcolor="#1D9FDF">
                         <p style="font-size:20px;">Rehabilitation and Reconstruction of District Roads</p>
                     </td>
                 </tr>
-                <tr class="heading">
-                    <td colspan="8" rowspan="1">
+                <tr class="heading" border="0" bgcolor="#1D9FDF">
+                    <td colspan="8" rowspan="1" border="0" bgcolor="#1D9FDF">
                         <p style="font-size:16px;">Awards and Disbursements</p>
                     </td>
                 </tr>
@@ -311,7 +318,7 @@
                     <td rowspan="2" colspan="1">District</td>
                     <td rowspan="2" colspan="1">Sub-project</td>
                     <td rowspan="2" colspan="1">NCB contract</td>
-                    <td rowspan="2" colspan="1">Type of Contract (code)</td>
+                    <td rowspan="2" colspan="1">Contract code</td>
                     <td rowspan="2" colspan="1">Contact description</td>
                     <td rowspan="2" colspan="1">Modality</td>
                     <td rowspan="2" colspan="1">Contract Amount (NRs) (Exc. VAT)</td>

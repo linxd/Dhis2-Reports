@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#export").click(function (e) {
@@ -140,9 +140,11 @@
                         }
                         sub = data.rows[i][1];
                     }
-
-                    var row = "<tr><td>" + districtt + "</td><td>" + sub + "</td><td>" + drcn + "</td><td>" + ncbc + "</td><td>" + cid + "</td><td>" + noc + "</td><td>" + csd + "</td><td>" + ced + "</td><td>" + cd + "</td><td>" + ca + "</td><td>" + cf + "</td><td>" + ct + "</td><td>" + eea + "</td><td>" + length + "</td><td>" + agt + "</td><td>" + pgt + "</td><td>" + ps + "</td></tr>";
-                    $(".reporttable").append(row);
+                    if (data.rows.length == 0) { }
+                    else {
+                        var row = "<tr><td>" + districtt + "</td><td>" + sub + "</td><td>" + drcn + "</td><td>" + ncbc + "</td><td>" + cid + "</td><td>" + noc + "</td><td>" + csd + "</td><td>" + ced + "</td><td>" + cd + "</td><td>" + ca + "</td><td>" + cf + "</td><td>" + ct + "</td><td>" + eea + "</td><td>" + length + "</td><td>" + agt + "</td><td>" + pgt + "</td><td>" + ps + "</td></tr>";
+                        $(".reporttable").append(row);
+                    }
                 });
             };
 
@@ -192,7 +194,7 @@
     </script>
     <style>
         .heading td {
-         
+
             color: white;
             text-align: center;
             border: none;
@@ -220,9 +222,10 @@
         }
 
         table thead {
-            background: gray;
+            background: lightgray;
         }
-        #export{
+
+        #export {
             margin-left: 90px;
         }
     </style>
@@ -231,18 +234,23 @@
 <body>
 
     <div class="body">
-     <button id="export">Export to Excel</button>
+        <button id="export">Export to Excel</button>
         <br>
-        <table class="table table-bordered reporttable" id="report_table"  border='1'>
+
+        <center> Start Date :
+            <input type="date" id="start" required> End Date :
+            <input type="date" id="end" required><br><br>
+            <button onClick="submit()" id="tap">Submit</button></center><br><br>
+        <table class="table table-bordered reporttable" id="report_table" border='1'>
             <thead>
                 <tr class="heading" bgcolor="#1D9FDF" border="none" text-align="center">
-                    <td colspan="3" rowspan="3" border="none" text-align="center"><img src="../api/documents/LWSeE7YgAvW/data" width="80%" height="80%"></td>
+                    <td colspan="3" rowspan="3" border="none" text-align="center"><img src="../dhis-web-commons/security/DRILP_Logo.jpg" width="90%" height="400%"></td>
                     <td colspan="11" rowspan="1" border="none" text-align="center">
                         <p style="font-size:16px;">Earthquake Emergency Assistance Project (EEAP)</p>
                     </td>
                     <td colspan="3" rowspan="3" border="none" text-align="center"></td>
                 </tr>
-                <tr class="heading"  bgcolor="#1D9FDF">
+                <tr class="heading" bgcolor="#1D9FDF">
                     <td colspan="11" rowspan="1" border="none" text-align="center">
                         <p style="font-size:20px;">Rehabilitation and Reconstruction of District Roads</p>
                     </td>
@@ -251,15 +259,6 @@
                     <td colspan="11" rowspan="1" border="none" text-align="center">
                         <p style="font-size:16px;">Monthly Project Progress Report (Part-I)</p>
                     </td>
-                </tr>
-                <tr class="noBorder">
-                    <td colspan="4"></td>
-                    <td colspan="2">Start Date : </td>
-                    <td colspan="2"><input type="date" id="start" required></td>
-                    <td colspan="2"> End Date : </td>
-                    <td colspan="2"><input type="date" id="end" required></td>
-                    <td colspan="1"><button onClick="submit()" id="tap">Submit</button></td>
-                    <td colspan="4"></td>
                 </tr>
 
                 <tr>
