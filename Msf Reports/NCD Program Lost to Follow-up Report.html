@@ -25,11 +25,11 @@
         };
         var url = window.location.href;
         var arrayUrl = url.split('=');
-        var ou = arrayUrl[3];
-        var arrayUrl1 = arrayUrl[2].split('&');
-        var pe = arrayUrl1[0];
-        var year = pe.split('Q')[0];
-        var quarter = pe.split('Q')[1];
+        var ou = arrayUrl[2];
+        //var arrayUrl1 = arrayUrl[2].split('&');
+        //var pe = arrayUrl1[0];
+      //  var year = pe.split('Q')[0];
+      //  var quarter = pe.split('Q')[1];
         var prog_id = "VCuHIFtJJSv";
         var enddate = getDate();
         var totalevent, totalEndevent = 0, totalEndevent2 = 0, activeatendevent;
@@ -40,6 +40,7 @@
             data.enrollments.forEach(function (element, index) {
                 var tei = element.trackedEntityInstance;
                 var count = 0;
+                var count2 = 0, count6 = 0;
                 $.when(
                     $.getJSON("../api/events.json?orgUnit=" + ou + "&program=" + prog_id + "&programStage=Kr60c8j7vMe&trackedEntityInstance=" + tei + "&skipPaging=true&endDate=" + enddate, {
                         format: "json"
@@ -49,9 +50,12 @@
                     }),
                     $.getJSON("../api/trackedEntityInstances/" + tei + ".json&skipPaging=true", {
                         format: "json"
+                    }),
+                    $.getJSON("../api/events.json?orgUnit=" + ou + "&program=" + prog_id + "&programStage=kwXu1zEDMEe&trackedEntityInstance=" + tei + "&skipPaging=true", {
+                        format: "json"
                     })
 
-                ).then(function (data1, data2, data3) {
+                ).then(function (data1, data2, data3, data4) {
                     $('table tr.no-records-found').remove();
                     if (data1[0].events.length != 0) {
                         count = 1;
@@ -59,6 +63,7 @@
                     else if (data1.httpStatusCode == 409 || data1.httpStatusCode == "409") { count = 2; }
                     if (data2[0].events.length == 0) {
                         count2 = 2;
+                        count6 = 2;
                     }
                     else if (data2.httpStatusCode == 409 || data2.httpStatusCode == "409") { count2 = 2; }
                     else {
@@ -98,19 +103,42 @@
                             dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
                             dateFourMonthsAgo.setMonth(dateFourMonthsAgo.getMonth() - 4);
                             console.log("event date : " + first);
-                            if (new Date(enddate) > new Date(latestEventDate) && new Date(latestEventDate) < dateSixMonthsAgo) {
+                            if (new Date(enddate) >= new Date(latestEventDate) && new Date(latestEventDate) <= dateSixMonthsAgo) {
                                 count2 = 1;
                             }
                             else {
                                 count2 = 0;
                             }
-                            if (new Date(enddate) > new Date(latestEventDate) && new Date(latestEventDate) < dateFourMonthsAgo) {
+                            if (new Date(enddate) >= new Date(latestEventDate) && new Date(latestEventDate) <= dateFourMonthsAgo) {
                                 count3 = 3;
                             }
                             else {
                                 count3 = 0;
                             }
                         }
+                    }
+
+                    if(count6 == 2){
+                      var date = data4[0].events[0].eventDate;
+                      var first = date.split('T')[0];
+                      var expireDate = new Date(first);
+                      var dateSixMonthsAgo = new Date(enddate);
+                      var dateFourMonthsAgo = new Date(enddate);
+                      dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
+                      dateFourMonthsAgo.setMonth(dateFourMonthsAgo.getMonth() - 4);
+                      console.log("event date : " + first);
+                      if (new Date(enddate) >= new Date(latestEventDate) && new Date(latestEventDate) <= dateSixMonthsAgo) {
+                          count2 = 1;
+                      }
+                      else {
+                          count2 = 0;
+                      }
+                      if (new Date(enddate) >= new Date(latestEventDate) && new Date(latestEventDate) <= dateFourMonthsAgo) {
+                          count3 = 3;
+                      }
+                      else {
+                          count3 = 0;
+                      }
                     }
 
                     for (var j = 0; j < data3[0].attributes.length; j++) {
@@ -352,14 +380,14 @@
         <br>
         <table class="table table-striped table-inverse table-bordered table-hover">
             <tr>
-                <td style="width:33%;text-align:center;border:1px solid #bbbbbb">Number of active patients (not had any visit in the previous 6 months)</td>
+                <td style="width:33%;text-align:center;border:1px solid #bbbbbb">Number of inactive patients (not had any visit in the previous 6 months)</td>
                 <td style="width:33%;text-align:center;border:1px solid #bbbbbb" id="totalNumber"> </td>
                 <td style="width:33%;text-align:center;border:1px solid #bbbbbb">
                     <button id="export1">Export Records</button>
                 </td>
             </tr>
             <tr>
-                <td style="width:33%;text-align:center;border:1px solid #bbbbbb">Number of active patients (not had any visit in the previous 4 months)</td>
+                <td style="width:33%;text-align:center;border:1px solid #bbbbbb">Number of inactive patients (not had any visit in the previous 4 months)</td>
                 <td style="width:33%;text-align:center;border:1px solid #bbbbbb" id="totalNumber2">
                 </td>
                 <td style="width:33%;text-align:center;border:1px solid #bbbbbb">
@@ -371,7 +399,7 @@
 
             <thead>
                 <tr>
-                    <th colspan="3" style="text-align:center;border:1px solid #bbbbbb">Number of active patients (not had any visit in the previous 6 months)</th>
+                    <th colspan="3" style="text-align:center;border:1px solid #bbbbbb">Number of inactive patients (not had any visit in the previous 6 months)</th>
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid #bbbbbb">Patient Identifier</th>
@@ -384,7 +412,7 @@
 
             <thead>
                 <tr>
-                    <th colspan="3" style="text-align:center;border:1px solid #bbbbbb">Number of active patients (not had any visit in the previous 4 months)</th>
+                    <th colspan="3" style="text-align:center;border:1px solid #bbbbbb">Number of inactive patients (not had any visit in the previous 4 months)</th>
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid #bbbbbb">Patient Identifier</th>
