@@ -79,8 +79,8 @@
 							var date = data2[0].events[b].eventDate;
 							var first = date.split('T')[0];
 							var expireDate = new Date(first);
-							var dateSixMonthsAgo = new Date(startdate);
-							var dateThreeMonthsAgo = new Date(startdate);
+							var dateSixMonthsAgo = new Date(enddate);
+							var dateThreeMonthsAgo = new Date(enddate);
 							dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
 							dateThreeMonthsAgo.setMonth(dateThreeMonthsAgo.getMonth() - 3);
 							if (new Date(enddate) > expireDate && expireDate > dateSixMonthsAgo) {
@@ -97,8 +97,8 @@
 							var date = data3[0].events[b].eventDate;
 							var first = date.split('T')[0];
 							var expireDate = new Date(first);
-							var dateSixMonthsAgo = new Date(startdate);
-							var dateThreeMonthsAgo = new Date(startdate);
+							var dateSixMonthsAgo = new Date(enddate);
+							var dateThreeMonthsAgo = new Date(enddate);
 							dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
 							dateThreeMonthsAgo.setMonth(dateThreeMonthsAgo.getMonth() - 3);
 							if (new Date(enddate) > expireDate && expireDate > dateSixMonthsAgo) {
@@ -109,7 +109,7 @@
 							}
 					}
 					if (count == 1 && count2 == 1) { totalEndevent++; }
-					if (count == 1 && count3 == 1) { totalEndevent2++; }
+					if (count == 1) { totalEndevent2++; }
 					document.getElementById('totalNumber').innerHTML = totalEndevent;
 					document.getElementById('totalNumber2').innerHTML = totalEndevent2;
 					//document.getElementById('totalNumber3').innerHTML = totalEnrollments;
@@ -283,7 +283,7 @@
 					<td style="width:50%" id="totalNumber"></td>
 				</tr>
 				<tr>
-					<td style="width:50%">Number of active patients (had at least one visit in the previous 3 months)</td>
+					<td style="width:50%">Number of active patients</td>
 					<td style="width:50%" id="totalNumber2"></td>
 				</tr>
 			</thead>

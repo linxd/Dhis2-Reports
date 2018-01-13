@@ -85,7 +85,7 @@
 							var date = data2[0].events[b].eventDate;
 							var first = date.split('T')[0];
 							var expireDate = new Date(first);
-							var dateSixMonthsAgo = new Date(startdate);
+							var dateSixMonthsAgo = new Date(enddate);
 							dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
 							if (new Date(enddate) >= expireDate && expireDate >= new Date(startdate)) {
 								var currentEventAttr = data2[0].events[b].dataValues;
@@ -104,7 +104,7 @@
 							var date = data2[0].events[b].eventDate;
 							var first = date.split('T')[0];
 							var expireDate = new Date(first);
-							var dateSixMonthsAgo = new Date(startdate);
+							var dateSixMonthsAgo = new Date(enddate);
 							dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
 							if (new Date(enddate) >= expireDate && expireDate >= dateSixMonthsAgo) {
 								var currentEventAttr = data2[0].events[b].dataValues;
@@ -149,9 +149,9 @@
 							var date = data22[0].events[b].eventDate;
 							var first = date.split('T')[0];
 							var expireDate = new Date(first);
-							var dateSixMonthsAgo = new Date(startdate);
+							var dateSixMonthsAgo = new Date(enddate);
 							dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
-							if (new Date(enddate) >= expireDate && expireDate >= dateSixMonthsAgo) {
+							if (new Date(enddate) >= expireDate && expireDate >= new Date(startdate)) {
 								var currentEventAttr = data22[0].events[b].dataValues;
 								for (var j = 0; j < currentEventAttr.length; j++) {
 									if ((currentEventAttr[j].dataElement == "lzBg6QalyhT" || currentEventAttr[j].dataElement == "rwDJebu16Fu" || currentEventAttr[j].dataElement == "uoVoakOJULl" || currentEventAttr[j].dataElement == "nwFajZjl3Fa") && (currentEventAttr[j].value == "Newly_diagnosed" || currentEventAttr[j].value == "Previously_diagnosed")) {
