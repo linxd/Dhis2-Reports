@@ -9,120 +9,114 @@
         crossorigin="anonymous">
     <script type="text/javascript">
 
-        var getDate = function (y, m) {
-            var s, e;
-            if (m == "01") { s = y + "-01-01"; e = y + "-01-31" }
-            if (m == "02") { s = y + "-02-01"; e = y + "-02-28" }
-            if (m == "03") { s = y + "-03-01"; e = y + "-03-31" }
-            if (m == "04") { s = y + "-04-01"; e = y + "-04-30" }
-            if (m == "05") { s = y + "-05-01"; e = y + "-05-31" }
-            if (m == "06") { s = y + "-06-01"; e = y + "-06-30" }
-            if (m == "07") { s = y + "-07-01"; e = y + "-07-31" }
-            if (m == "08") { s = y + "-08-01"; e = y + "-08-31" }
-            if (m == "09") { s = y + "-09-01"; e = y + "-09-30" }
-            if (m == "10") { s = y + "-10-01"; e = y + "-10-31" }
-            if (m == "11") { s = y + "-11-01"; e = y + "-11-30" }
-            if (m == "12") { s = y + "-12-01"; e = y + "-12-31" }
-            return [s, e];
-        };
+
+
 
         var getDate = function (y, q) {
-            var s, e;
+            var edate = "";
+            var sdate = "";
             if (q == 1) {
-                e = y + "-03-31";
-                s = y + "-01-01";
+                sdate = y + "-01-01"
+                edate = y + "-03-31"
             }
             if (q == 2) {
-                e = y + "-06-30";
-                s = y + "-04-01";
+                sdate = y + "-04-01"
+                edate = y + "-06-30"
             }
             if (q == 3) {
-                e = y + "-09-30";
-                s = y + "-07-01";
+                sdate = y + "-07-01"
+                edate = y + "-09-30"
             }
             if (q == 4) {
-                e = y + "-12-31";
-                s = y + "-09-01";
+                sdate = y + "-10-01"
+                edate = y + "-12-31"
             }
-            return [s, e];
+            return [sdate, edate];
         };
 
-
-
         var url = window.location.href;
-        var prog_id = "VCuHIFtJJSv";
         var arrayUrl = url.split('=');
         var ou = arrayUrl[3];
         var arrayUrl1 = arrayUrl[2].split('&');
         var pe = arrayUrl1[0];
         var year = pe.split('Q')[0];
-		     var quarter = pe.split('Q')[1];
+        var quarter = pe.split('Q')[1];
+        var prog_id = "VCuHIFtJJSv";
         var dates = getDate(year, quarter);
         var startdate = dates[0];
         var enddate = dates[1];
-        var enddateLastYear = new Date(enddate);
-        var startdateLastYear = new Date(startdate);
-        //enddateLastYear.setMonth(enddateLastYear.getMonth() - 6);
-        startdateLastYear.setFullYear(startdateLastYear.getFullYear() - 1);
-       // startdateLastYear.setDate(startdateLastYear.getDate() - 1);
-        enddateLastYear.setFullYear(enddateLastYear.getFullYear() - 1);
-        //enddateLastYear.setDate(enddateLastYear.getDate() - 1);
-
-        var dde = enddateLastYear.getDate();
-        var mme = enddateLastYear.getMonth() + 1; //January is 0!
-
-        var yyyye = enddateLastYear.getFullYear();
-        if (dde < 10) {
-            dde = '0' + dde;
-        }
-        if (mme < 10) {
-            mme = '0' + mme;
-        }
-        var enddately = yyyye + '-' + mme + '-' + dde;
-
-        var dds = startdateLastYear.getDate();
-        var mms = startdateLastYear.getMonth() + 1; //January is 0!
-
-        var yyyys = startdateLastYear.getFullYear();
-        if (dds < 10) {
-            dds = '0' + dds;
-        }
-        if (mms < 10) {
-            mms = '0' + mms;
-        }
-        var startdately = yyyys + '-' + mms + '-' + dds;
-        var predate = new Date(enddate);
-        predate.setMonth(predate.getMonth() - 3);
-        var totalevent, totalEndevent = 0, activeatendevent = 0;
-        var enrolledLastYear = 0;
-
+        var htnDbActive = 0, htnDbTotal = 0;
+        var totalExit = 0, totalActive = 0;
         var checkStatus = function (data) {
             data.enrollments.forEach(function (element, index) {
                 var tei = element.trackedEntityInstance;
-                var count = 0;
-                enrolledLastYear++;
+                var active = false;
+                var exit = false;
+                var htndbnum = false;
+                var htnanddbflag = false;
                 $.when(
                     $.getJSON("../api/events.json?orgUnit=" + ou + "&program=" + prog_id + "&programStage=Kr60c8j7vMe&trackedEntityInstance=" + tei + "&skipPaging=true", {
                         format: "json"
+                    }),
+                    $.getJSON("../api/events.json?orgUnit=" + ou + "&program=" + prog_id + "&trackedEntityInstance=" + tei + "&orderBy=eventDate:DESC&skipPaging=true", {
+                        format: "json"
                     })
-                ).then(function (data2) {
-                    if (data2.events.length == 0) {
-                        count = 1;
+
+                ).then(function (data1, data2) {
+                    var exitstage = data1[0].events;
+                    var eventsdata = data2[0].events;
+                    if (exitstage.length == 0) {
+                        active = true;
                     }
-                    else if (data2.httpStatusCode == 409 || data2.httpStatusCode == "409") { count = 0; }
                     else {
-                        var date = data2.events[0].eventDate;
+                        var date = exitstage[0].eventDate;
                         var first = date.split('T')[0];
                         var expireDate = new Date(first);
-                        if (new Date(enddate) < expireDate) {
-                            count = 1;
+                        if (new Date(startdate) < expireDate) {
+                            active = true;
+                        }
+                        else if (new Date(enddate) <= expireDate && expireDate >= new Date(startdate)) {
+                            exit = true;
+                           // active = false;
+                        }
+                        else {
+                            //active = false;
                         }
                     }
-                    if (count == 1) {
-                        activeatendevent++;
+
+                    if (active) {
+                        var flag = 0;
+                        if (eventsdata[0].programStage == "Kr60c8j7vMe") { var p = 1 }
+                        else { var p = 0; }
+
+                        for (var i = p; i < eventsdata.length; i++) {
+                            var date = eventsdata[i].eventDate;
+                            var first = date.split('T')[0];
+                            var expireDate = new Date(first);
+                            if (new Date(enddate) >= expireDate) {
+                                var currentEventAttr = eventsdata[i].dataValues;
+                                for (var j = 0; j < currentEventAttr.length; j++) {
+                                    if ((currentEventAttr[j].dataElement == "Ft37n3yO81y" || currentEventAttr[j].dataElement == "D4Z6XYfNQR9" || currentEventAttr[j].dataElement == "nwFajZjl3Fa" || currentEventAttr[j].dataElement == "uoVoakOJULl") && (currentEventAttr[j].value == "Newly_diagnosed" || currentEventAttr[j].value == "Previously_diagnosed")) {
+                                        htnanddbflag = true;
+                                        //flag = i;
+                                        for (var k = 0; k < currentEventAttr.length; k++) {
+                                            if ((currentEventAttr[k].dataElement == "xs1fYqkRLW7" || currentEventAttr[k].dataElement == "Jo9Q7zgmtt1" || currentEventAttr[k].dataElement == "TEP4nLvGj4d" || currentEventAttr[k].dataElement == "KGc70Z8QdL2" || currentEventAttr[k].dataElement == "nMYJ8iizuMT" || currentEventAttr[k].dataElement == "ZfAWkRlF6an") && (currentEventAttr[k].value == "true" || currentEventAttr[k].value == "stroke" || currentEventAttr[k].value == "tia")) {
+                                                htndbnum = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    document.getElementById('totalNumber').innerHTML =  activeatendevent;
-                    document.getElementById('totalNumber2').innerHTML = enrolledLastYear;
+
+                    if (exit) { totalExit++; }
+                    if (htnanddbflag) { totalActive++; }
+                    if (htndbnum) { htnDbTotal++; }
+                    htnDbActive = totalExit + totalActive;
+                    document.getElementById('num').innerHTML = htnDbTotal;
+                    document.getElementById('deno').innerHTML = htnDbActive;
+                    document.getElementById('p').innerHTML = index + " of " + (data.enrollments.length - 1) + " completed";
                     if (data.enrollments.length - 1 == index) {
                         document.getElementById('loader').style.display = "none";
                     }
@@ -132,20 +126,17 @@
 
         };
 
+
         $(document).ready(function () {
 
             $.when(
-                $.getJSON("../api/enrollments.json?ou=" + ou + "&ouMode=DESCENDANTS&program=" + prog_id + "&fields=trackedEntityInstance&skipPaging=true&programStartDate=" + startdately + "&programEndDate=" + enddately, {
+                $.getJSON("../api/enrollments.json?ou=" + ou + "&ouMode=DESCENDANTS&program=" + prog_id + "&fields=trackedEntityInstance&skipPaging=true&programEndDate=" + enddate, {
                     format: "json"
                 })
-            ).then(function (dataa) {
-                if (dataa.enrollments.length == 0) {
-                    alert('No enrollments found!');
-					               window.history.back();
-                }
-                else {
-                    checkStatus(dataa);
-                }
+            ).then(function (data1) {
+                checkStatus(data1);
+
+
             });
         });
     </script>
@@ -294,12 +285,17 @@
         <table class="table table-bordered table-hover reporttable">
             <thead>
                 <tr>
-                    <td style="width:50%">Active patients at end of reporting quarter who enrolled in same quarter last year</td>
-                    <td style="width:50%" id="totalNumber"></td>
+                    <td style="width:50%">HTN or/and DB (Assesments true/stroke/tia)</td>
+                    <td style="width:50%" id="num"></td>
                 </tr>
                 <tr>
-                    <td style="width:50%">Patients who enrolled same quarter last year</td>
-                    <td style="width:50%" id="totalNumber2"></td>
+                    <td style="width:50%">Active patients + exit patients durin rp (HTN and DB)</td>
+                    <td style="width:50%" id="deno"></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td style="width:50%">progress</td>
+                    <td style="width:50%" id="p"></td>
                 </tr>
             </thead>
         </table>
